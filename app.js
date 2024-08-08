@@ -21,9 +21,11 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.engine("ejs", ejsMate);
+// app.engine("ejs", ejsMate);
 // app.engine("ejs", require("ejs-mate").__express);
-app.engine("ejs", require("ejs").__express);
+// app.engine("ejs", require("ejs").__express);
+const engine = require("ejs-mate");
+app.engine("ejs", engine);
 app.use(express.static(path.join(__dirname, "/public")));
 
 const sessionOptions = {
