@@ -9,17 +9,30 @@ module.exports.renderNewForm = (req, res) => {
   res.render("listings/new.ejs");
 };
 
-module.exports.createListing = async (req, res, next) => {
-  // let{title, description, price, image, location, country} = req.body;
-  // let listing = req.body.listing;
-  // new Listing(listing);
-  let newListing = new Listing(req.body.listing);
-  console.log(req.user);
-  newListing.owner = req.user._id;
-  await newListing.save();
-  req.flash("success", "New Listing Created!");
+// module.exports.createListing = async (req, res, next) => {
+//   // let{title, description, price, image, location, country} = req.body;
+//   // let listing = req.body.listing;
+//   // new Listing(listing);
+//   let newListing = new Listing(req.body.listing);
+//   console.log(req.user);
+//   newListing.owner = req.user._id;
+//   await newListing.save();
+//   req.flash("success", "New Listing Created!");
+//   res.redirect("/listings");
+// };
+
+module.exports.createListing=async(req,res,next)=>{
+
+  let url=req.file.path;
+  let filename=req.file.filename;
+  const newListing=new Listing(req.body.listing);
+  newListing.owner=req.user._id;
+  newListing.image={url,filename};
+  let savedListing=await newListing.save();
+  console.log(savedListing);
+  req.flash("success","New Listing Created!");
   res.redirect("/listings");
-};
+}
 
 module.exports.showListing = async (req, res, next) => {
   let { id } = req.params;

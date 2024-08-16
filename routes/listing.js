@@ -8,7 +8,7 @@ const { isLoggedIn } = require("../middleware.js");
 const { isOwner } = require("../middleware.js");
 const { validateListing } = require("../middleware.js");
 const multer = require("multer");
-const storage = require("../cloudConfig.js");
+const { storage } = require("../cloudConfig.js");
 const upload = multer({ storage });
 
 const listingController = require("../controllers/listing.js");
@@ -34,6 +34,7 @@ router
   .put(
     isLoggedIn,
     isOwner,
+    upload.single("listing[image]"),
     validateListing,
     wrapAsync(listingController.updateListing)
   )
